@@ -1,4 +1,4 @@
-# Grade Book App
+# Grade Book App: Gives an overview of the project.
 
 ## Introduction
 
