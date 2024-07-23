@@ -1,39 +1,26 @@
 import sqlite3
 
-def initialize_database():
+def initialize_db():
     conn = sqlite3.connect('gradebook.db')
     cursor = conn.cursor()
-
+    
+    # Drop the table if it exists to avoid issues
+    cursor.execute('DROP TABLE IF EXISTS students')
+    
+    # Create the table with the correct schema
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS students (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT UNIQUE NOT NULL,
-            names TEXT NOT NULL
-        )
-    ''')
-
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS courses (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+        CREATE TABLE students (
+            id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
-            trimester TEXT NOT NULL,
-            credits INTEGER NOT NULL
+            email TEXT NOT NULL,
+            elab_score INTEGER,
+            foundations_score INTEGER,
+            course TEXT
         )
     ''')
-
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS enrollments (
-            student_id INTEGER,
-            course_id INTEGER,
-            grade REAL,
-            FOREIGN KEY (student_id) REFERENCES students (id),
-            FOREIGN KEY (course_id) REFERENCES courses (id),
-            PRIMARY KEY (student_id, course_id)
-        )
-    ''')
-
+    
     conn.commit()
     conn.close()
 
-if __name__ == "__main__":
-    initialize_database()
+if __name__ == '__main__':
+    initialize_db()
